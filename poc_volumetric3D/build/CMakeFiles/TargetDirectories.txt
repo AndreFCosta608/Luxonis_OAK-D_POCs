@@ -1,0 +1,3 @@
+/home/pi/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_volumetric3D/build/CMakeFiles/poc_volumetric3D.dir
+/home/pi/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_volumetric3D/build/CMakeFiles/edit_cache.dir
+/home/pi/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_volumetric3D/build/CMakeFiles/rebuild_cache.dir

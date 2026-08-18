@@ -1,0 +1,100 @@
+
+Cãmera: OAK-D de Geração 1.
+
+https://chev.me/arucogen/
+
+sudo apt update && sudo apt upgrade -y
+
+sudo apt install -y \
+  cmake build-essential git \
+  libopencv-dev \
+  libusb-1.0-0-dev \
+  libpcl-dev pcl-tools \
+  libglfw3-dev libgl1-mesa-dev \
+  python3-pip
+  
+sudo apt update && sudo apt install -y \
+    libxcb-xinerama0 \
+    libxcb-icccm4 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-render-util0 \
+    libxkbcommon-x11-0  
+
+
+#  depthai-core (build from source)
+cd ~
+git clone --recursive https://github.com/luxonis/depthai-core.git
+cd depthai-core
+git fetch --all
+git checkout v2_stable
+git submodule update --init --recursive
+rm -rf build
+
+cmake -S. -Bbuild \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DBUILD_SHARED_LIBS=ON \
+  -DCMAKE_INSTALL_PREFIX=/usr/local \
+  -DDEPTHAI_OPENCV_SUPPORT=ON
+
+cmake --build build --parallel 4
+sudo cmake --install build
+
+
+
+#get open3d
+wget https://github.com/isl-org/Open3D/releases/download/v0.18.0/open3d-devel-linux-x86_64-cxx11-abi-0.18.0.tar.xz
+tar -xf open3d-devel-linux-x86_64-cxx11-abi-0.18.0.tar.xz
+mv open3d-devel-linux-x86_64-cxx11-abi-0.18.0 open3d
+
+
+
+sudo apt install -y \
+  libeigen3-dev libglfw3-dev libglew-dev \
+  libjpeg-dev libpng-dev libtiff-dev \
+  libgoogle-glog-dev libgflags-dev \
+  libatlas-base-dev libsuitesparse-dev \
+  python3-dev python3-pip
+
+sudo apt install -y libeigen3-dev
+sudo apt install -y libxkbcommon-dev
+sudo apt install -y libxinerama-dev
+sudo apt install -y libssl-dev
+sudo apt install -y \
+  libxinerama-dev \
+  libxcursor-dev \
+  libxi-dev \
+  libxrandr-dev \
+  libwayland-dev \
+  wayland-protocols
+
+wget https://github.com/isl-org/Open3D/releases/download/v0.18.0/open3d-devel-linux-x86_64-cxx11-abi-0.18.0.tar.xz
+tar -xf open3d-devel-linux-x86_64-cxx11-abi-0.18.0.tar.xz
+mv open3d-devel-linux-x86_64-cxx11-abi-0.18.0 open3d
+rm open3d-devel-linux-x86_64-cxx11-abi-0.18.0.tar.xz
+
+
+
+
+
+# POC 1 — Detection
+cd ~/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_detection
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release
+cmake --build build --parallel 3
+./build/poc_detection
+
+
+# POC 2 — Volumetric3D
+cd ~/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_volumetric3D
+
+source /home/pi/Deposito/Projetos/venv310/bin/activate
+pip install ultralytics
+yolo export model=yolov8n-seg.pt format=onnx imgsz=640
+
+rm -rf build/*
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DONNXRUNTIME_ROOT=~/Deposito/Projetos/Meus/ChessBOT/fontes/OAK_POCs/poc_volumetric3D
+cmake --build build --parallel 2
+
+./build/poc_volumetric3D
+
+ 
